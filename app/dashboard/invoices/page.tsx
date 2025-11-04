@@ -1,9 +1,9 @@
-import Pagination from '@/app/ui/invoices/pagination';
 import Search from '@/app/ui/search';
 import { CreateInvoice } from '@/app/ui/invoices/buttons';
 import { lusitana } from '@/app/ui/fonts';
 import { Suspense } from 'react';
 import InvoicesTable from '@/app/ui/invoices/invoices-table';
+import InvoicesPagination from '@/app/ui/invoices/invoices-pagination';
 
 export default async function Page(
   /* NOSONAR */ {
@@ -31,7 +31,9 @@ export default async function Page(
         <InvoicesTable searchParams={searchParams} />
       </Suspense>
       <div className='mt-5 flex w-full justify-center'>
-        {/* <Pagination totalPages={totalPages} /> */}
+        <Suspense>
+          <InvoicesPagination searchParams={searchParams} />
+        </Suspense>
       </div>
     </div>
   );
