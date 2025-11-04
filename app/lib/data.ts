@@ -13,15 +13,7 @@ const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
 export async function fetchRevenue() {
   try {
-    // Artificially delay a response for demo purposes.
-    // Don't do this in production :)
-
-    console.log('Fetching revenue data...');
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
     const data = await sql<Revenue[]>`SELECT * FROM revenue`;
-
-    console.log('Data fetch completed after 1 seconds.');
 
     return data;
   } catch (error) {
@@ -31,9 +23,6 @@ export async function fetchRevenue() {
 }
 
 export async function fetchLatestInvoices() {
-  console.log('Fetching latest invoices...');
-  await new Promise((resolve) => setTimeout(resolve, 1500));
-
   try {
     const data = await sql<LatestInvoiceRaw[]>`
       SELECT invoices.amount, customers.name, customers.image_url, customers.email, invoices.id
@@ -57,7 +46,6 @@ export async function fetchLatestInvoices() {
 }
 
 export async function fetchCardData() {
-  console.log('Fetching card data...');
   try {
     // You can probably combine these into a single SQL query
     // However, we are intentionally splitting them to demonstrate
@@ -79,10 +67,6 @@ export async function fetchCardData() {
     const numberOfCustomers = Number(data[1][0].count ?? '0');
     const totalPaidInvoices = formatCurrency(data[2][0].paid ?? '0');
     const totalPendingInvoices = formatCurrency(data[2][0].pending ?? '0');
-
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    console.log('Card data fetched after 1 second.');
 
     return {
       numberOfCustomers,
