@@ -8,6 +8,7 @@ import {
   Revenue,
 } from './definitions';
 import { formatCurrency } from './utils';
+import { cacheLife } from 'next/cache';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
@@ -85,6 +86,9 @@ export async function fetchFilteredInvoices(
   query: string,
   currentPage: number,
 ) {
+  'use cache';
+  cacheLife('minutes');
+
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
   try {
@@ -117,6 +121,9 @@ export async function fetchFilteredInvoices(
 }
 
 export async function fetchInvoicesPages(query: string) {
+  'use cache';
+  cacheLife('minutes');
+
   try {
     const data = await sql`SELECT COUNT(*)
     FROM invoices
