@@ -170,6 +170,9 @@ export async function fetchInvoiceById(id: string) {
 }
 
 export async function fetchCustomers() {
+  'use cache';
+  cacheLife('hours');
+
   try {
     const customers = await sql<CustomerField[]>`
       SELECT
