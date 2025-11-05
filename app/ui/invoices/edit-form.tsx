@@ -8,6 +8,7 @@ import { Button } from '@/app/ui/button';
 import { fetchCustomers, fetchInvoiceById } from '@/app/lib/data';
 import { CustomerSelector } from './customer-selector';
 import { updateInvoice } from '@/app/lib/actions';
+import { notFound } from 'next/navigation';
 
 export default async function EditInvoiceForm(
   /* NOSONAR */ {
@@ -21,6 +22,11 @@ export default async function EditInvoiceForm(
     fetchCustomers(),
     fetchInvoiceById(id),
   ]);
+
+  if (!invoice) {
+    notFound();
+  }
+
   const updateInvoiceWithId = updateInvoice.bind(null, invoice.id);
 
   return (
