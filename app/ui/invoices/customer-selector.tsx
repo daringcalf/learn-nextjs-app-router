@@ -1,8 +1,18 @@
 import { fetchCustomers } from '@/app/lib/data';
+import { CustomerField } from '@/app/lib/definitions';
 import { UserCircleIcon } from '@heroicons/react/24/outline';
+import postgres from 'postgres';
 
-export async function CustomerSelector() {
-  const customers = await fetchCustomers();
+export async function CustomerSelector(
+  /* NOSONAR */ {
+    customerId,
+    customers,
+  }: {
+    customerId?: string;
+    customers?: postgres.RowList<CustomerField[]>;
+  },
+) {
+  customers ??= await fetchCustomers();
 
   return (
     <div className='mb-4'>
@@ -14,7 +24,7 @@ export async function CustomerSelector() {
           id='customer'
           name='customerId'
           className='peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500'
-          defaultValue=''
+          defaultValue={customerId || ''}
         >
           <option value='' disabled>
             Select a customer
